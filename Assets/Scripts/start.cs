@@ -26,18 +26,19 @@ public class start : MonoBehaviour
         grid = new Vector3[3];
         scales = new float[3];
         startmatrices();
+        Debug.Log(matrix);
+      
+            tablespawner = Instantiate(tableprefab);
+        tablespawner.GetComponent<table>().data = dbhandler.table;
+            tablespawner.GetComponent<table>().tableid = 0;
+            tablespawner.transform.localPosition = new Vector3(
+                transform.localPosition.x, transform.localPosition.y + 7f - 7f * 0,
+                transform.localPosition.z - 0.22f);
+            tables[0] = tablespawner;
+            scales[0] = tablespawner.transform.localScale.x;
 
         tablespawner = Instantiate(tableprefab);
-        tablespawner.GetComponent<table>().data = matrix;
-        tablespawner.GetComponent<table>().tableid = 0;
-        tablespawner.transform.localPosition = new Vector3(
-            transform.localPosition.x, transform.localPosition.y + 7f - 7f * 0,
-            transform.localPosition.z - 0.22f);
-        tables[0] = tablespawner;
-        scales[0] = tablespawner.transform.localScale.x;
-
-        tablespawner = Instantiate(tableprefab);
-        tablespawner.GetComponent<table>().data = matrix1;
+        tablespawner.GetComponent<table>().data = dbhandler.table1;
         tablespawner.GetComponent<table>().tableid = 1;
         tablespawner.transform.localPosition = new Vector3(
             transform.localPosition.x, transform.localPosition.y + 7f - 7f * 1,
