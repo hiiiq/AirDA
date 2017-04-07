@@ -51,17 +51,18 @@ public class dbhandler : MonoBehaviour {
 
 	            for (int i = 0; i < reader.FieldCount; i++)
 	            {
-	                table[0, i] = columns[i];
-	                for (int j = 1; j < rows.Count - 1; j++)
-	                {
-	                    string[] row = rows[j - 1].Split(',');
-	                    table[j, i] = row[i];
-	                }
+                    table[0, i] = columns[i];
+                    for (int j = 1; j < rows.Count - 1; j++)
+	                    {
+	                        string[] row = rows[j - 1].Split(',');
+	                        table[j, i] = row[i];
+	                    }
 	            }
             reader.Close();
             dbcmd.Dispose();
             dbconn.Close();
             //end table1
+
             // table 2
             dbconn = (IDbConnection)new SqliteConnection(conn);
             dbconn.Open(); //Open connection to the database.
@@ -77,25 +78,27 @@ public class dbhandler : MonoBehaviour {
             rows.Clear();
             while (reader.Read())
             {
-                string row = reader.GetInt32(0) + "," + reader.GetInt32(1);
+                string row = reader.GetInt32(0) + "," + reader.GetInt32(1)+ "," + reader.GetInt32(2) + "," + reader.GetInt32(3);
                 rows.Add(row);
             }
-            table1 = new string[rows.Count, reader.FieldCount];
+            table1 = new string[rows.Count, columns.Count];
 
             for (int i = 0; i < reader.FieldCount; i++)
             {
+
                 table1[0, i] = columns[i];
-                for (int j = 1; j < rows.Count - 1; j++)
+
+                for (int j = 1; j < rows.Count; j++)
                 {
                     string[] row = rows[j - 1].Split(',');
                     table1[j, i] = row[i];
                 }
             }
-                Debug.Log(table1);
                 reader.Close();
 	            dbcmd.Dispose();
 	            dbconn.Close();
 	        // end table2
+
 	    }
 	    catch (Exception e)
 	    {

@@ -20,12 +20,13 @@ public class table : MonoBehaviour
     public bool movingtable = false;
 
     void Start ()
-	{   frame.transform.localScale = new Vector3(data.GetLength(1)/7f,1f,1f);
+	{
+        frame.transform.localScale = new Vector3(data.GetLength(1)/7f,1f,1f);
         chilren = new List<GameObject>();
-	    sheet.GetComponent<BoxCollider>().center = new Vector3(0f,data.GetLength(0)/-5f +2.2f,0f);
+        transform.GetComponent<BoxCollider>().enabled = false;
+        sheet.GetComponent<BoxCollider>().center = new Vector3(0f,data.GetLength(0)/-5f +2.2f,0f);
 	    sheet.GetComponent<BoxCollider>().size = new Vector3(data.GetLength(1),data.GetLength(0)/2.5f,1f);
         columns = new int[data.GetLength(1)];
-
         for (int i = 0; i < data.GetLength(1); i++)
         {
             columns[i] = 0;
@@ -100,7 +101,7 @@ public class table : MonoBehaviour
 	            {      
 	                if (columns[i] == 1)
 	                {
-	                    cell.GetComponent<Renderer>().material.color = Color.red;
+	                    cell.GetComponent<Renderer>().material.color = new Color(179f/ 255f,217f / 255f, 1f);
 	                }
 	                else
 	                {
@@ -110,12 +111,12 @@ public class table : MonoBehaviour
 	            }
 	        }
 	    }
-
         if (movingtable)
         {
             Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
             Vector3 rayPoint = r.GetPoint(distance);
-            gameObject.transform.position = rayPoint;
+            gameObject.transform.position = new Vector3(rayPoint.x, rayPoint.y, -0.27f);
+            transform.GetComponent<BoxCollider>().enabled = true;
 
         }
     }
@@ -159,5 +160,19 @@ public class table : MonoBehaviour
         }
         GameObject.Find("import").transform.GetComponent<start>().CreateNewTable(newdata);
     }
+
+
+    void OnMouseDown()
+    {
+        if (movingtable)
+        {
+            Ray r = Camera.main.ScreenPointToRay(Input.mousePosition);
+            Vector3 rayPoint = r.GetPoint(distance);
+            gameObject.transform.position = new Vector3(rayPoint.x, rayPoint.y, -0.22f);
+            transform.GetComponent<BoxCollider>().enabled = false;
+            sheet.GetComponent<BoxCollider>().enabled = true;
+            movingtable = false;
+        }
+    } 
 }
 

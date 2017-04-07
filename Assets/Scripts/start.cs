@@ -25,17 +25,16 @@ public class start : MonoBehaviour
         tables = new GameObject[3];
         grid = new Vector3[3];
         scales = new float[3];
-        startmatrices();
-        Debug.Log(matrix);
+        //startmatrices();
       
-            tablespawner = Instantiate(tableprefab);
+        tablespawner = Instantiate(tableprefab);
         tablespawner.GetComponent<table>().data = dbhandler.table;
-            tablespawner.GetComponent<table>().tableid = 0;
-            tablespawner.transform.localPosition = new Vector3(
-                transform.localPosition.x, transform.localPosition.y + 7f - 7f * 0,
-                transform.localPosition.z - 0.22f);
-            tables[0] = tablespawner;
-            scales[0] = tablespawner.transform.localScale.x;
+        tablespawner.GetComponent<table>().tableid = 0;
+        tablespawner.transform.localPosition = new Vector3(
+            transform.localPosition.x, transform.localPosition.y + 7f - 7f * 0,
+            transform.localPosition.z - 0.22f);
+        tables[0] = tablespawner;
+        scales[0] = tablespawner.transform.localScale.x;
 
         tablespawner = Instantiate(tableprefab);
         tablespawner.GetComponent<table>().data = dbhandler.table1;
@@ -47,7 +46,7 @@ public class start : MonoBehaviour
         scales[1] = tablespawner.transform.localScale.x;
 
         tablespawner = Instantiate(tableprefab);
-        tablespawner.GetComponent<table>().data = matrix2;
+        tablespawner.GetComponent<table>().data = dbhandler.table1;
         tablespawner.GetComponent<table>().tableid = 2;
         tablespawner.transform.localPosition = new Vector3(
             transform.localPosition.x, transform.localPosition.y + 7f - 7f * 2,
@@ -123,7 +122,9 @@ public class start : MonoBehaviour
         tablespawner = Instantiate(tableprefab);
         tablespawner.GetComponent<table>().data = data;
         tablespawner.GetComponent<table>().movingtable = true;
-
+        tablespawner.GetComponent<BoxCollider>().enabled = true;
+        tablespawner.GetComponent<table>().sheet.GetComponent<BoxCollider>().enabled = false;
+        tablespawner.GetComponent<BoxCollider>().size = new Vector3(data.GetLength(1) + 1.75f, 6.5f, 1f);
     }
 
     void startmatrices()
