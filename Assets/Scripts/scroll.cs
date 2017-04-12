@@ -9,10 +9,6 @@ public class scroll : MonoBehaviour
     public float click;
     private Vector3 pos;
     public Vector3 orig;
-    
-    void Start()
-    {
-    }
 
     void Update()   
     {
@@ -28,6 +24,7 @@ public class scroll : MonoBehaviour
         orig = transform.position;
         click = Input.mousePosition.y;
         drag = true;
+        transform.GetComponentInParent<table>().StickTable();
     }
 
     void OnMouseUp()

@@ -1,15 +1,14 @@
 fileFormatVersion: 2
 guid: 78fcbf002fac4764fb28bbf3f3a2964f
-timeCreated: 1488460237
+timeCreated: 1491675758
 licenseType: Free
 MonoImporter:
   serializedVersion: 2
   defaultReferences:
-  - tableprefab: {instanceID: 0}
   - cellprefab: {fileID: 1567544843778334, guid: 617c42249bf00064fa372712145e97ce,
       type: 2}
-  - frame: {instanceID: 0}
-  - sheet: {instanceID: 0}
+  - frame: {fileID: 1898111046822172, guid: 278b4c0581306be42a9a02ca83857fed, type: 2}
+  - sheet: {fileID: 1905426422284014, guid: 278b4c0581306be42a9a02ca83857fed, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 

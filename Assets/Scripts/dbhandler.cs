@@ -8,6 +8,7 @@ using System;
 public class dbhandler : MonoBehaviour {
     public static string[,] table;
     public static string[,] table1;
+    public static string[,] jointable;
 
     // database names
     private List<string> databaseNames;
@@ -26,38 +27,38 @@ public class dbhandler : MonoBehaviour {
 	    try
 	    {
          
-	            string conn = "URI=file:" + Application.dataPath + "/testdb.db"; //Path to database.
+	        string conn = "URI=file:" + Application.dataPath + "/testdb.db"; //Path to database.
 
             //table 1
-	            IDbConnection dbconn;
-	            dbconn = (IDbConnection) new SqliteConnection(conn);
-	            dbconn.Open(); //Open connection to the database.
-	            IDbCommand dbcmd = dbconn.CreateCommand();
+	        IDbConnection dbconn;
+	        dbconn = (IDbConnection) new SqliteConnection(conn);
+	        dbconn.Open(); //Open connection to the database.
+	        IDbCommand dbcmd = dbconn.CreateCommand();
 
-	            string sqlQuery = "SELECT * " + "FROM customers LIMIT 100";
-	            dbcmd.CommandText = sqlQuery;
-	            IDataReader reader = dbcmd.ExecuteReader();
-	            for (int i = 0; i < reader.FieldCount; i++)
-	            {
-	                columns.Add(reader.GetName(i));
-	            }
+	        string sqlQuery = "SELECT * " + "FROM customers LIMIT 100";
+	        dbcmd.CommandText = sqlQuery;
+	        IDataReader reader = dbcmd.ExecuteReader();
+	        for (int i = 0; i < reader.FieldCount; i++)
+	        {
+	            columns.Add(reader.GetName(i));
+	        }
 
-	            while (reader.Read())
-	            {
-	                string row = reader.GetInt32(0) + "," + reader.GetString(1) + "," + reader.GetString(2);
-	                rows.Add(row);
-	            }
-	            table = new string[rows.Count, reader.FieldCount];
+	        while (reader.Read())
+	        {
+	            string row = reader.GetInt32(0) + "," + reader.GetString(1) + "," + reader.GetString(2);
+	            rows.Add(row);
+	        }
+	        table = new string[rows.Count, reader.FieldCount];
 
-	            for (int i = 0; i < reader.FieldCount; i++)
-	            {
-                    table[0, i] = columns[i];
-                    for (int j = 1; j < rows.Count - 1; j++)
-	                    {
-	                        string[] row = rows[j - 1].Split(',');
-	                        table[j, i] = row[i];
-	                    }
-	            }
+	        for (int i = 0; i < reader.FieldCount; i++)
+	        {
+                table[0, i] = columns[i];
+                for (int j = 1; j < rows.Count - 1; j++)
+	                {
+	                    string[] row = rows[j - 1].Split(',');
+	                    table[j, i] = row[i];
+	                }
+	        }
             reader.Close();
             dbcmd.Dispose();
             dbconn.Close();
@@ -110,4 +111,57 @@ public class dbhandler : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    static public string[,] Join(string query, int columnnr)
+    {
+        List<string> rows = new List<string>();
+        List<string> columns = new List<string>();
+
+
+        try
+        {
+            string conn = "URI=file:" + Application.dataPath + "/testdb.db"; //Path to database.
+
+            IDbConnection dbconn;
+            dbconn = (IDbConnection)new SqliteConnection(conn);
+            dbconn.Open(); //Open connection to the database.
+            IDbCommand dbcmd = dbconn.CreateCommand();
+
+            dbcmd.CommandText = query;
+            IDataReader reader = dbcmd.ExecuteReader();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                columns.Add(reader.GetName(i));
+            }
+
+            while (reader.Read())
+            {
+                string row = reader.GetInt32(0).ToString();
+                for (int i = 1; i < columnnr; i++)
+                {
+                     row = row + "," + reader.GetInt32(i).ToString();
+                }
+                rows.Add(row);
+            }
+            jointable = new string[rows.Count, reader.FieldCount];
+
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                jointable[0, i] = columns[i];
+                for (int j = 1; j < rows.Count - 1; j++)
+                {
+                    string[] row = rows[j - 1].Split(',');
+                    jointable[j, i] = row[i];
+                }
+            }
+            reader.Close();
+            dbcmd.Dispose();
+            dbconn.Close();
+        }
+        catch (Exception e)
+        {
+            Debug.Log(e.Message);
+        }
+        return jointable;
+    }
 }

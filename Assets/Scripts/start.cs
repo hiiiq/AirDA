@@ -26,10 +26,11 @@ public class start : MonoBehaviour
         grid = new Vector3[3];
         scales = new float[3];
         //startmatrices();
-      
+
         tablespawner = Instantiate(tableprefab);
         tablespawner.GetComponent<table>().data = dbhandler.table;
         tablespawner.GetComponent<table>().tableid = 0;
+        tablespawner.GetComponent<table>().tablename = "customers";
         tablespawner.transform.localPosition = new Vector3(
             transform.localPosition.x, transform.localPosition.y + 7f - 7f * 0,
             transform.localPosition.z - 0.22f);
@@ -39,6 +40,7 @@ public class start : MonoBehaviour
         tablespawner = Instantiate(tableprefab);
         tablespawner.GetComponent<table>().data = dbhandler.table1;
         tablespawner.GetComponent<table>().tableid = 1;
+        tablespawner.GetComponent<table>().tablename = "orders";
         tablespawner.transform.localPosition = new Vector3(
             transform.localPosition.x, transform.localPosition.y + 7f - 7f * 1,
             transform.localPosition.z - 0.22f);
@@ -48,6 +50,7 @@ public class start : MonoBehaviour
         tablespawner = Instantiate(tableprefab);
         tablespawner.GetComponent<table>().data = dbhandler.table1;
         tablespawner.GetComponent<table>().tableid = 2;
+        tablespawner.GetComponent<table>().tablename = "orders";
         tablespawner.transform.localPosition = new Vector3(
             transform.localPosition.x, transform.localPosition.y + 7f - 7f * 2,
             transform.localPosition.z - 0.22f);
@@ -55,16 +58,16 @@ public class start : MonoBehaviour
         scales[2] = tablespawner.transform.localScale.x;
 
     }
-    
-    void Update () {
+
+    void Update() {
         if (selected != null)
         {
-            tables[(int) selected].transform.position = new Vector3(
+            tables[(int)selected].transform.position = new Vector3(
                 resizer.transform.localPosition.x + 15f, resizer.transform.localPosition.y,
                 resizer.transform.localPosition.z - 1f);
-            tables[(int) selected].transform.localScale = new Vector3(3f, 3f, 1f);
-            tables[(int) selected].transform.GetComponent<BoxCollider>().size = new Vector3(8f, 6.2f, 0.1f);
-            tables[(int) selected].transform.GetComponentInChildren<BoxCollider>().enabled = false;
+            tables[(int)selected].transform.localScale = new Vector3(3f, 3f, 1f);
+            tables[(int)selected].transform.GetComponent<BoxCollider>().size = new Vector3(8f, 6.2f, 0.1f);
+            tables[(int)selected].transform.GetComponentInChildren<BoxCollider>().enabled = false;
             for (int i = 0; i < tables.Length; i++)
             {
                 if (i != selected)
@@ -117,14 +120,15 @@ public class start : MonoBehaviour
         selected = tableid;
     }
 
-    public void CreateNewTable(string[,] data)
+    public void CreateNewTable(string[,] data, string name)
     {
         tablespawner = Instantiate(tableprefab);
         tablespawner.GetComponent<table>().data = data;
+        tablespawner.GetComponent<table>().tablename = name;
         tablespawner.GetComponent<table>().movingtable = true;
+        tablespawner.GetComponent<table>().newtable = true;
         tablespawner.GetComponent<BoxCollider>().enabled = true;
-        tablespawner.GetComponent<table>().sheet.GetComponent<BoxCollider>().enabled = false;
-        tablespawner.GetComponent<BoxCollider>().size = new Vector3(data.GetLength(1) + 1.75f, 6.5f, 1f);
+        tablespawner.GetComponent<BoxCollider>().size = new Vector3(data.GetLength(1) + 1.75f, 6.5f, 0.8f);
     }
 
     void startmatrices()
