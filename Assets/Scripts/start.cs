@@ -48,9 +48,9 @@ public class start : MonoBehaviour
         scales[1] = tablespawner.transform.localScale.x;
 
         tablespawner = Instantiate(tableprefab);
-        tablespawner.GetComponent<table>().data = dbhandler.table1;
+        tablespawner.GetComponent<table>().data = dbhandler.table2;
         tablespawner.GetComponent<table>().tableid = 2;
-        tablespawner.GetComponent<table>().tablename = "orders";
+        tablespawner.GetComponent<table>().tablename = "orderlines";
         tablespawner.transform.localPosition = new Vector3(
             transform.localPosition.x, transform.localPosition.y + 7f - 7f * 2,
             transform.localPosition.z - 0.22f);

@@ -8,6 +8,7 @@ using System;
 public class dbhandler : MonoBehaviour {
     public static string[,] table;
     public static string[,] table1;
+    public static string[,] table2;
     public static string[,] jointable;
 
     // database names
@@ -79,7 +80,7 @@ public class dbhandler : MonoBehaviour {
             rows.Clear();
             while (reader.Read())
             {
-                string row = reader.GetInt32(0) + "," + reader.GetInt32(1)+ "," + reader.GetInt32(2) + "," + reader.GetInt32(3);
+                string row = reader.GetInt32(0) + "," + reader.GetInt32(1) + "," + reader.GetInt32(2) + "," + reader.GetInt32(3) + "," + reader.GetInt32(4);
                 rows.Add(row);
             }
             table1 = new string[rows.Count, columns.Count];
@@ -95,13 +96,49 @@ public class dbhandler : MonoBehaviour {
                     table1[j, i] = row[i];
                 }
             }
-                reader.Close();
-	            dbcmd.Dispose();
-	            dbconn.Close();
-	        // end table2
+            reader.Close();
+            dbcmd.Dispose();
+            dbconn.Close();
+            // end table2            
+            
+            // table 3
+            dbconn = (IDbConnection)new SqliteConnection(conn);
+            dbconn.Open(); //Open connection to the database.
+            dbcmd = dbconn.CreateCommand();
+            query = "SELECT * FROM orderlines LIMIT 100";
+            dbcmd.CommandText = query;
+            reader = dbcmd.ExecuteReader();
+            columns.Clear();
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+                columns.Add(reader.GetName(i));
+            }
+            rows.Clear();
+            while (reader.Read())
+            {
+                string row = reader.GetInt32(0) + "," + reader.GetInt32(1) + "," + reader.GetInt32(2) + "," + reader.GetInt32(3) + "," + reader.GetInt32(4) + "," + reader.GetInt32(5);
+                rows.Add(row);
+            }
+            table2 = new string[rows.Count, columns.Count];
 
-	    }
-	    catch (Exception e)
+            for (int i = 0; i < reader.FieldCount; i++)
+            {
+
+                table2[0, i] = columns[i];
+
+                for (int j = 1; j < rows.Count; j++)
+                {
+                    string[] row = rows[j - 1].Split(',');
+                    table2[j, i] = row[i];
+                }
+            }
+            reader.Close();
+            dbcmd.Dispose();
+            dbconn.Close();
+            // end table3
+
+        }
+        catch (Exception e)
 	    {
 	        Debug.Log(e.Message);
 	    }
